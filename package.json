@@ -1,7 +1,7 @@
 {
-  "name": "waitpid",
-  "version": "0.1.1",
-  "description": "A node.js binding to the waitpid() syscall.",
+  "name": "waitpid2",
+  "version": "1.0.0",
+  "description": "Complete native binding to the waitpid() syscall",
   "main": "lib/waitpid.js",
   "scripts": {
     "install": "node-gyp rebuild"
@@ -14,7 +14,7 @@
     "waitpid",
     "child process"
   ],
-  "author": "AvianFlu",
+  "author": "joshiggins",
   "license": "MIT",
   "gypfile": true
 }
