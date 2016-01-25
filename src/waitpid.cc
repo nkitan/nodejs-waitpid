@@ -50,6 +50,10 @@ static Handle<Value> Waitpid(const Arguments& args) {
 extern "C" void init(Handle<Object> target) {
   HandleScope scope;
   NODE_SET_METHOD(target, "waitpid", Waitpid);
+  // expose the option constants
+  target->Set(String::NewSymbol("WNOHANG"), Integer::New(WNOHANG));
+  target->Set(String::NewSymbol("WUNTRACED"), Integer::New(WUNTRACED));
+  target->Set(String::NewSymbol("WCONTINUED"), Integer::New(WCONTINUED));
 }
 
 
