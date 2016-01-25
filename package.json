@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/AvianFlu/node-waitpid.git"
+    "url": "git://github.com/joshiggins/node-waitpid.git"
   },
   "keywords": [
     "waitpid",
