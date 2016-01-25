@@ -21,6 +21,8 @@ static Handle<Value> Waitpid(const Arguments& args) {
 
     Local<Object> result = Object::New();
 
+    result->Set(String::New("pid"), Integer::New(r));
+
     if (WIFEXITED(status)) {
       result->Set(String::New("exitCode"), Integer::New(WEXITSTATUS(status)));
       result->Set(String::New("signalCode"), Null());
