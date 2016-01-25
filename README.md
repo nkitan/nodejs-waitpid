@@ -1,21 +1,5 @@
-# node-waitpid
+# node-waitpid2
 
-Ever been running a child process, and wished you could just make the parent
-node.js process stop and wait until that child exited?
+Originally forked from AvianFlu/node-waitpid changing the behaviour to be more like nature intended. 
 
-Well, thanks to the tangential needs of some dubious mad science, now you can,
-without all the weeping and gnashing of teeth.
-
-```js
-var waitpid = require('waitpid');
-
-var status = waitpid(child.pid);
-
-```
-
-Assuming a child process spawned as `child` above, waitpid will suspend the
-parent until the child is finished.
-
-## Why would you ever do such a thing!?
-
-Like I said, mad science.  It will make sense eventually.
+You should implement a blocking loop in your application to wait for a child process. You can do this asyncronously by passing `WNOHANG` as an option and using a timeout to call `waitpid` until the PID returned is `-1`.
