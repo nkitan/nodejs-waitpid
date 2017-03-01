@@ -6,6 +6,6 @@ The `waitpid` syscall is used to [wait for a process to change state](https://li
 
 For terminated child processes, waiting for them releases the resources associated with the child in the process table. If you don't do this, they could remain zombies for ever!
 
-You should implement a blocking loop in your application in order to wait for a child process. You should do this asyncronously by passing `WNOHANG` as an option and using a timeout to call `waitpid` until the PID returned is `-1`. Don't let the `waitpid` call block the whole thread.
+You should implement a blocking loop in your application in order to wait for a child process. You should do this asyncronously by passing `WNOHANG` as an option and using a timeout to call `waitpid` until the PID returned is `0` (no child process state changes left). Don't let the `waitpid` call block the whole thread.
 
-Version 2.0.0 moves to the latest node addon/v8 API.
+Starting from version 2.0.0 fixed to use the latest node addon/v8 API.
