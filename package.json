@@ -1,6 +1,6 @@
 {
   "name": "waitpid2",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Complete native binding to the waitpid() syscall",
   "main": "lib/waitpid.js",
   "scripts": {
