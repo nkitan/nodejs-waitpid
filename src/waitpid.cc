@@ -31,7 +31,7 @@ void Waitpid(const FunctionCallbackInfo<Value>& args) {
     // return an object
     Local<Object> result = Object::New(isolate);
 
-    result->Set(String::NewFromUtf8(isolate, "pid"), Number::New(isolate, r));
+    result->Set(String::NewFromUtf8(isolate, "return"), Number::New(isolate, r));
 
     if (WIFEXITED(status)) {
         result->Set(String::NewFromUtf8(isolate, "exitCode"), Number::New(isolate, WEXITSTATUS(status)));
