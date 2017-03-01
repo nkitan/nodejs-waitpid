@@ -1,5 +1,5 @@
-#include <v8.h>
 #include <node.h>
+#include <v8.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
@@ -8,53 +8,39 @@
 using namespace v8;
 using namespace node;
 
-static Handle<Value> Waitpid(const Arguments& args) {
-  HandleScope scope;
-  int r, child, options, status;
+void Waitpid(const FunctionCallbackInfo<Value>& args) {
+    Isolate* isolate = args.GetIsolate();
 
-  if (args[0]->IsInt32()) {
-    child = args[0]->Int32Value();
-  } else {
-    return ThrowException(Exception::Error(String::New("Child PID must be an integer.")));
-  }
+    int r, status;
 
-  if (args[1]->IsInt32()) {
-    options = args[1]->Int32Value();
-  } else {
-    return ThrowException(Exception::Error(String::New("Options must be an integer.")));
-  }
+    // check arguments
+    if (!args[0]->IsNumber() || !args[1]->IsNumber()) {
+        isolate->ThrowException(Exception::TypeError(
+            String::NewFromUtf8(isolate, "Wrong arguments")));
+        return;
+    }
 
-  // call as nature intended
-  // if you need to loop on this, then use WNOHANG and a timeout in node so you don't block
-  r = waitpid(child, &status, options);
+    // do the waitpid call
+    r = waitpid(args[0]->NumberValue(), &status, args[1]->NumberValue());
 
-  Local<Object> result = Object::New();
+    // return an object
+    Local<Object> result = Object::New(isolate);
 
-  result->Set(String::New("pid"), Integer::New(r));
+    result->Set(String::NewFromUtf8(isolate, "pid"), Number::New(isolate, r));
 
-  if (WIFEXITED(status)) {
-    result->Set(String::New("exitCode"), Integer::New(WEXITSTATUS(status)));
-    result->Set(String::New("signalCode"), Null());
-    return scope.Close(result);
-  }
-  else if (WIFSIGNALED(status)) {
-    result->Set(String::New("exitCode"), Null());
-    result->Set(String::New("signalCode"), Integer::New(WTERMSIG(status)));
-    return scope.Close(result);
-  }
-  return scope.Close(Undefined());
+    if (WIFEXITED(status)) {
+        result->Set(String::NewFromUtf8(isolate, "exitCode"), Number::New(isolate, WEXITSTATUS(status)));
+        result->Set(String::NewFromUtf8(isolate, "signalCode"), Null(isolate));
+    } else if (WIFSIGNALED(status)) {
+        result->Set(String::NewFromUtf8(isolate, "exitCode"), Null(isolate));
+        result->Set(String::NewFromUtf8(isolate, "signalCode"), Number::New(isolate, WTERMSIG(status)));
+    }
 
+    args.GetReturnValue().Set(result);
 }
 
-
-extern "C" void init(Handle<Object> target) {
-  HandleScope scope;
-  NODE_SET_METHOD(target, "waitpid", Waitpid);
-  // expose the option constants
-  target->Set(String::NewSymbol("WNOHANG"), Integer::New(WNOHANG));
-  target->Set(String::NewSymbol("WUNTRACED"), Integer::New(WUNTRACED));
-  target->Set(String::NewSymbol("WCONTINUED"), Integer::New(WCONTINUED));
+void init(Local<Object> exports) {
+    NODE_SET_METHOD(exports, "waitpid", Waitpid);
 }
 
-
-NODE_MODULE(waitpid, init)
+NODE_MODULE(waitpid2, init)
