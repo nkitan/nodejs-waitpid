@@ -40,7 +40,13 @@ void Waitpid(const FunctionCallbackInfo<Value>& args) {
 }
 
 void init(Local<Object> exports) {
+    Isolate* isolate = exports->GetIsolate();
+
     NODE_SET_METHOD(exports, "waitpid", Waitpid);
+    // expose the option constants
+    exports->Set(String::NewFromUtf8(isolate, "WNOHANG"), Number::New(isolate, WNOHANG));
+    exports->Set(String::NewFromUtf8(isolate, "WUNTRACED"), Number::New(isolate, WUNTRACED));
+    exports->Set(String::NewFromUtf8(isolate, "WCONTINUED"), Number::New(isolate, WCONTINUED));
 }
 
 NODE_MODULE(waitpid2, init)
