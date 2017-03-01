@@ -14,9 +14,14 @@ void Waitpid(const FunctionCallbackInfo<Value>& args) {
     int r, status;
 
     // check arguments
+    if (args.Length() < 2) {
+        isolate->ThrowException(Exception::TypeError(
+            String::NewFromUtf8(isolate, "Two arguments are required, PID and options")));
+        return;
+    }
     if (!args[0]->IsNumber() || !args[1]->IsNumber()) {
         isolate->ThrowException(Exception::TypeError(
-            String::NewFromUtf8(isolate, "Wrong arguments")));
+            String::NewFromUtf8(isolate, "PID and options must be numbers")));
         return;
     }
 
