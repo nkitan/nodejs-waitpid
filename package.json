@@ -3,9 +3,6 @@
   "version": "2.0.5",
   "description": "Complete native binding to the waitpid() syscall",
   "main": "lib/waitpid.js",
-  "scripts": {
-    "install": "node-gyp rebuild"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/joshiggins/node-waitpid2.git"
