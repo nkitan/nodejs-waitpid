@@ -16,12 +16,12 @@ void Waitpid(const FunctionCallbackInfo<Value>& args) {
     // check arguments
     if (args.Length() < 2) {
         isolate->ThrowException(Exception::TypeError(
-            String::NewFromUtf8(isolate, "Two arguments are required, PID and options")));
+            String::NewFromUtf8(isolate, "Two arguments are required, PID and options").ToLocalChecked()));
         return;
     }
     if (!args[0]->IsNumber() || !args[1]->IsNumber()) {
         isolate->ThrowException(Exception::TypeError(
-            String::NewFromUtf8(isolate, "PID and options must be numbers")));
+            String::NewFromUtf8(isolate, "PID and options must be numbers").ToLocalChecked()));
         return;
     }
 
@@ -31,14 +31,14 @@ void Waitpid(const FunctionCallbackInfo<Value>& args) {
     // return an object
     Local<Object> result = Object::New(isolate);
 
-    result->Set(String::NewFromUtf8(isolate, "return"), Number::New(isolate, r));
+    result->Set(String::NewFromUtf8(isolate, "return").ToLocalChecked(), Number::New(isolate, r));
 
     if (WIFEXITED(status)) {
-        result->Set(String::NewFromUtf8(isolate, "exitCode"), Number::New(isolate, WEXITSTATUS(status)));
-        result->Set(String::NewFromUtf8(isolate, "signalCode"), Null(isolate));
+        result->Set(String::NewFromUtf8(isolate, "exitCode").ToLocalChecked(), Number::New(isolate, WEXITSTATUS(status)));
+        result->Set(String::NewFromUtf8(isolate, "signalCode").ToLocalChecked(), Null(isolate));
     } else if (WIFSIGNALED(status)) {
-        result->Set(String::NewFromUtf8(isolate, "exitCode"), Null(isolate));
-        result->Set(String::NewFromUtf8(isolate, "signalCode"), Number::New(isolate, WTERMSIG(status)));
+        result->Set(String::NewFromUtf8(isolate, "exitCode").ToLocalChecked(), Null(isolate));
+        result->Set(String::NewFromUtf8(isolate, "signalCode").ToLocalChecked(), Number::New(isolate, WTERMSIG(status)));
     }
 
     args.GetReturnValue().Set(result);
@@ -49,9 +49,9 @@ void init(Local<Object> exports) {
 
     NODE_SET_METHOD(exports, "waitpid", Waitpid);
     // expose the option constants
-    exports->Set(String::NewFromUtf8(isolate, "WNOHANG"), Number::New(isolate, WNOHANG));
-    exports->Set(String::NewFromUtf8(isolate, "WUNTRACED"), Number::New(isolate, WUNTRACED));
-    exports->Set(String::NewFromUtf8(isolate, "WCONTINUED"), Number::New(isolate, WCONTINUED));
+    exports->Set(String::NewFromUtf8(isolate, "WNOHANG").ToLocalChecked(), Number::New(isolate, WNOHANG));
+    exports->Set(String::NewFromUtf8(isolate, "WUNTRACED").ToLocalChecked(), Number::New(isolate, WUNTRACED));
+    exports->Set(String::NewFromUtf8(isolate, "WCONTINUED").ToLocalChecked(), Number::New(isolate, WCONTINUED));
 }
 
 NODE_MODULE(waitpid2, init)
