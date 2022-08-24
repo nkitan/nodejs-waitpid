@@ -54,4 +54,4 @@ void init(Local<Object> exports) {
     exports->Set(String::NewFromUtf8(isolate, "WCONTINUED").ToLocalChecked(), Number::New(isolate, WCONTINUED));
 }
 
-NODE_MODULE(waitpid2, init)
+NODE_MODULE(nodejs-waitpid, init)
