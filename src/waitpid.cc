@@ -44,8 +44,8 @@ void Waitpid(const FunctionCallbackInfo<Value>& args) {
     args.GetReturnValue().Set(result);
 }
 
-void init(Local<Object> exports) {
-    Isolate* isolate = exports->GetIsolate();
+void Initialize(Local<Object> exports) {
+        Isolate* isolate = exports->GetIsolate();
 
     NODE_SET_METHOD(exports, "waitpid", Waitpid);
     // expose the option constants
@@ -54,4 +54,4 @@ void init(Local<Object> exports) {
     exports->Set(String::NewFromUtf8(isolate, "WCONTINUED").ToLocalChecked(), Number::New(isolate, WCONTINUED));
 }
 
-NODE_MODULE(nodejs-waitpid, init)
+NODE_MODULE(NODE_GYP_MODULE_NAME, Initialize)
