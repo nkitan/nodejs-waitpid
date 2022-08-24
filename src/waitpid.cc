@@ -26,7 +26,7 @@ void Waitpid(const FunctionCallbackInfo<Value>& args) {
     }
 
     // do the waitpid call
-    r = waitpid(args[0]->NumberValue(), &status, args[1]->NumberValue());
+    r = waitpid(args[0]->NumberValue(Nan::GetCurrentContext()).ToChecked(), &status, args[1]->NumberValue(Nan::GetCurrentContext()).ToChecked());
 
     // return an object
     Local<Object> result = Object::New(isolate);
@@ -45,7 +45,7 @@ void Waitpid(const FunctionCallbackInfo<Value>& args) {
 }
 
 void Initialize(Local<Object> exports) {
-        Isolate* isolate = exports->GetIsolate();
+    Isolate* isolate = exports->GetIsolate();
 
     NODE_SET_METHOD(exports, "waitpid", Waitpid);
     // expose the option constants
