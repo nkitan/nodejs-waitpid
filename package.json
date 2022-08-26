@@ -16,7 +16,8 @@
   "gypfile": true,
   "dependencies": {
     "@mapbox/node-pre-gyp": "^1.0.9",
-    "nan": "^2.16.0"
+    "nan": "^2.16.0",
+    "node-gyp": "^9.1.0"
   },
   "devDependencies": {
     "node-pre-gyp-github": "^1.3.1"
