@@ -1,34 +1,31 @@
 {
-  "name": "waitpid2",
-  "version": "2.0.5",
+  "name": "waitpid",
+  "version": "1.0.0",
   "description": "Complete native binding to the waitpid() syscall",
   "main": "lib/waitpid.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/joshiggins/node-waitpid2.git"
+    "url": "https://github.com/nkitan/nodejs-waitpid"
   },
   "keywords": [
     "waitpid",
     "child process"
   ],
-  "author": "joshiggins",
+  "author": "ankitdas",
   "license": "MIT",
   "gypfile": true,
   "dependencies": {
-    "node-pre-gyp": "^0.6.33"
+    "@mapbox/node-pre-gyp": "^1.0.9",
+    "nan": "^2.16.0"
   },
   "devDependencies": {
     "node-pre-gyp-github": "^1.3.1"
   },
-  "bundledDependencies":["node-pre-gyp"],
+  "bundledDependencies": [
+    "node-pre-gyp"
+  ],
   "scripts": {
     "prepublish": "npm ls",
     "install": "node-pre-gyp install --fallback-to-build"
-  },
-  "binary": {
-    "module_name": "waitpid",
-    "module_path": "./lib/binding/",
-    "host": "https://github.com/joshiggins/node-waitpid2/releases/download/",
-    "remote_path": "{version}"
   }
 }

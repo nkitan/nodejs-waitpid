@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <nan.h>
 #include <errno.h>
 
 using namespace v8;
