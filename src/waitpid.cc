@@ -11,29 +11,31 @@ using namespace node;
 
 void Waitpid(const FunctionCallbackInfo<Value>& args) {
     Isolate* isolate = args.GetIsolate();
-    int r, status;
+    int waitpid_result, status;
 
     // check arguments
     if (args.Length() < 2) {
-        isolate->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "Two arguments are required, PID and options", v8::NewStringType::kNormal).ToLocalChecked()));
+        Nan::ThrowTypeError("Two arguments are required, PID and options");
         return;
     }
     if (!args[0]->IsNumber() || !args[1]->IsNumber()) {
-        isolate->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "PID and options must be numbers", v8::NewStringType::kNormal).ToLocalChecked()));
+        Nan::ThrowTypeError("PID and options must be numbers");
         return;
     }
 
     // do the waitpid call
-    r = waitpid(args[0]->NumberValue(Nan::GetCurrentContext()).ToChecked(), &status, args[1]->NumberValue(Nan::GetCurrentContext()).ToChecked());
+    waitpid_result = waitpid(args[0]->NumberValue(Nan::GetCurrentContext()).ToChecked(), &status, args[1]->NumberValue(Nan::GetCurrentContext()).ToChecked());
 
-    // return an object
+    // set return value to waitpid result
     Local<Object> result = Object::New(isolate);
-    Nan::Set(result, String::NewFromUtf8(isolate, "return", v8::NewStringType::kNormal).ToLocalChecked(), Number::New(isolate, r));
+    Nan::Set(result, String::NewFromUtf8(isolate, "return", v8::NewStringType::kNormal).ToLocalChecked(), Number::New(isolate, waitpid_result));
 
     if (WIFEXITED(status)) {
+        // program exited
         Nan::Set(result, String::NewFromUtf8(isolate, "exitCode", v8::NewStringType::kNormal).ToLocalChecked(), Number::New(isolate, WEXITSTATUS(status)));
         Nan::Set(result, String::NewFromUtf8(isolate, "signalCode", v8::NewStringType::kNormal).ToLocalChecked(), Null(isolate));
     } else if (WIFSIGNALED(status)) {
+        // program terminated
         Nan::Set(result, String::NewFromUtf8(isolate, "exitCode", v8::NewStringType::kNormal).ToLocalChecked(), Null(isolate));
         Nan::Set(result, String::NewFromUtf8(isolate, "signalCode", v8::NewStringType::kNormal).ToLocalChecked(), Number::New(isolate, WTERMSIG(status)));
     }
