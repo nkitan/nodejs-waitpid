@@ -12,8 +12,11 @@
   },
   "binary": {
     "module_name": "waitpid",
-    "module_path": "./build/Release/obj.target/waitpid/src/waitpid.o"
-  },
+    "module_path": "./lib/",
+    "remote_path": "./{module_name}/v{version}/{configuration}/",
+    "package_name": "{module_name}-v{version}-{node_abi}-{platform}-{arch}.tar.gz",
+    "host": "https://node-pre-gyp-tests.s3-us-west-1.amazonaws.com"
+},
   "dependencies": {
     "@mapbox/node-pre-gyp": "^1.0.9",
     "nan": "^2.16.0",
